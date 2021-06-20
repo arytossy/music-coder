@@ -1,5 +1,4 @@
 import React from "react"
-import Block from "./Block";
 import Line from "./Line";
 import "./Score.css";
 

@@ -4,17 +4,25 @@ const { Score } = require("./models");
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
 app.get("/api", (req, res) => {
   res.json({message:"Welcome to API!"});
 });
 
-app.get("/api/scores", async (req, res) => {
-  const scores = await Score.findAll({attributes: ["id", "title"]});
-  res.json(scores);
-});
+app.route("/api/scores")
+  .get(async (req, res) => {
+    const scores = await Score.findAll({attributes: ["id", "title"]});
+    res.json(scores);
+  })
+  .post(async (req, res) => {
+    const newScore = await Score.create(req.body);
+    res.json(newScore.toJSON());
+  });
 
 app.route("/api/scores/:id")
-  .get( async (req, res) => {
+  .get(async (req, res) => {
     const score = await Score.findByPk(req.params.id);
     res.json(score.toJSON());
   });

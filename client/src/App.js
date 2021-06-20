@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Layout from "./pages/Layout";
 import ShowScore from "./pages/ShowScore";
 import "./App.css"
+import CreateScore from "./pages/CreateScore";
 
 class App extends React.Component {
   render() {
@@ -13,6 +14,7 @@ class App extends React.Component {
         <Layout>
           <Route exact path="/" component={Home} />
           <Route exact path="/scores/:id" component={ShowScore}/>
+          <Route exact path="/create-score" component={CreateScore} />
         </Layout>
       </BrowserRouter>
     );

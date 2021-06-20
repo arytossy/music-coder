@@ -22,6 +22,7 @@ export default class Home extends React.Component {
   render() {
     return (
       <div id="home">
+        <Link to="/create-score"><button>新規作成</button></Link>
         <h2>コード譜一覧</h2>
         <ul id="scores-index">
           {this.state.scores.map((score) => {

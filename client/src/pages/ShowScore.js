@@ -33,8 +33,10 @@ export default class ShowScore extends React.Component {
     return (
       <div id="show-score">
         <table id="description">
-          <tr><th>タイトル：</th><td>{this.state.title}</td></tr>
-          <tr><th>調：</th><td>{this.state.key}</td></tr>
+          <tbody>
+            <tr><th>タイトル：</th><td>{this.state.title}</td></tr>
+            <tr><th>調：</th><td>{this.state.key}</td></tr>
+          </tbody>
         </table>
         <textarea id="test-output"
           defaultValue={this.state.data}
