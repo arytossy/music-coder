@@ -11,12 +11,26 @@ export default class Home extends React.Component {
     }
   }
 
-  componentDidMount() {
+  getScores() {
     axios.get("api/scores")
       .then((res) => {
         this.setState({scores: res.data});
       })
       .catch((e) => console.error(e));
+  }
+
+  componentDidMount() {
+    this.getScores();
+  }
+
+  handleDeleteClick(e) {
+    if (confirm(`以下を削除します！\nタイトル：${e.target.dataset.title}`))
+      axios.delete(`/api/scores/${e.target.dataset.id}`)
+        .then(res => {
+          alert("削除しました");
+          this.getScores();
+        })
+        .catch(e => console.error(e));
   }
 
   render() {
@@ -30,7 +44,15 @@ export default class Home extends React.Component {
             return (
               <li key={score.id}>
                 <Link to={`/scores/${score.id}`}>{score.title}</Link>
-                <Link to={`/scores/${score.id}/edit`}><button>編集</button></Link>
+                <div>
+                  <Link to={`/scores/${score.id}/edit`}><button>編集</button></Link>
+                  <button
+                    data-id={score.id}
+                    data-title={score.title}
+                    className="danger"
+                    onClick={(e) => this.handleDeleteClick(e)}
+                  >削除</button>
+                </div>
               </li>
             );
           })}

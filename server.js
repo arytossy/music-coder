@@ -8,27 +8,60 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.route("/api/scores")
-  .get(async (req, res) => {
-    const scores = await Score.findAll({attributes: ["id", "title"]});
-    res.json(scores);
+  .get((req, res) => {
+    Score.findAll({attributes: ["id", "title"]})
+      .then(scores => {
+        res.json(scores)
+      })
+      .catch(e => {
+        res.sendStatus(404);
+      });
   })
-  .post(async (req, res) => {
-    const newScore = await Score.create(req.body);
-    res.json(newScore.toJSON());
+  .post((req, res) => {
+    Score.create(req.body)
+      .then(newScore => {
+        res.status(201).json(newScore.toJSON());
+      })
+      .catch(e => {
+        res.sendStatus(400);
+      });
   });
 
 app.route("/api/scores/:id")
-  .get(async (req, res) => {
-    const score = await Score.findByPk(req.params.id);
-    res.json(score.toJSON());
+  .get((req, res) => {
+    Score.findByPk(req.params.id)
+     .then(score => {
+       res.json(score.toJSON());
+     })
+     .catch(e => {
+       res.sendStatus(404);
+     });
   })
-  .put(async (req, res) => {
-    const result = await Score.update(req.body, {
+  .put((req, res) => {
+    Score.update(req.body, {
       where: {
         id: req.params.id
       }
+    })
+    .then(result => {
+      res.json(result);
+    })
+    .catch(e => {
+      res.sendStatus(400);
     });
-    res.json(result);
+  })
+  .delete((req, res) => {
+    Score.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    .then(number => {
+      res.sendStatus(204);
+    })
+    .catch(e => {
+      res.sendStatus(404);
+    });
   });
 
 app.use("/dist", express.static(path.resolve(__dirname, "client/dist")));

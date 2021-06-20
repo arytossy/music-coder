@@ -28,6 +28,14 @@ button {
   color: #555;
 }
 
+button.danger {
+  background-color: #eaa;
+}
+
 button:hover {
   background-color: #9dd;
+}
+
+button.danger:hover {
+  background-color: #d99;
 }

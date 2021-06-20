@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import { Link } from "react-router-dom";
 import Score from "../components/Score";
 
 export default class EditScore extends React.Component {
@@ -77,55 +78,64 @@ export default class EditScore extends React.Component {
   }
 
   render() {
-    return (
-      <div id="edit-score">
-        <table id="description">
-          <tbody>
-            <tr>
-              <th>タイトル：</th>
-              <td>
-                <input type="text"
-                  value={this.state.title}
-                  onChange={e => this.handleTitleChange(e)}
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>調：</th>
-              <td>
-                <select
-                  value={this.state.musicRoot}
-                  onChange={e => this.handleMusicRootChange(e)}
-                >
-                  {this.musicRoots.map((root) => {
-                    return (
-                      <option value={root} key={root}>{root}</option>
-                    );
-                  })}
-                </select>
-                <select
-                  value={this.state.musicKey}
-                  onChange={e => this.handleMusicKeyChange(e)}
-                >
-                  {this.musicKeys.map((musicKey) => {
-                    return (
-                      <option value={musicKey} key={musicKey}>{musicKey}</option>
-                    );
-                  })}
-                </select>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div><button onClick={() => this.handleSaveClick()}>保存</button></div>
-        <textarea id="edit-area"
-          value={this.state.data}
-          onChange={e => this.handleDataChange(e)}
-        />
-        <hr></hr>
-        <h3>***Preview***</h3>
-        <Score data={this.state.data} />
-      </div>
-    );
+    if (this.state.id === "") {
+      return (
+        <div id="not-found">
+          <p>データが存在しません...</p>
+          <Link to="/"><button>戻る</button></Link>
+        </div>
+      );
+    } else {
+      return (
+        <div id="edit-score">
+          <table id="description">
+            <tbody>
+              <tr>
+                <th>タイトル：</th>
+                <td>
+                  <input type="text"
+                    value={this.state.title}
+                    onChange={e => this.handleTitleChange(e)}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th>調：</th>
+                <td>
+                  <select
+                    value={this.state.musicRoot}
+                    onChange={e => this.handleMusicRootChange(e)}
+                  >
+                    {this.musicRoots.map((root) => {
+                      return (
+                        <option value={root} key={root}>{root}</option>
+                      );
+                    })}
+                  </select>
+                  <select
+                    value={this.state.musicKey}
+                    onChange={e => this.handleMusicKeyChange(e)}
+                  >
+                    {this.musicKeys.map((musicKey) => {
+                      return (
+                        <option value={musicKey} key={musicKey}>{musicKey}</option>
+                      );
+                    })}
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div><button onClick={() => this.handleSaveClick()}>保存</button></div>
+          <textarea id="edit-area"
+            value={this.state.data}
+            onChange={e => this.handleDataChange(e)}
+          />
+          <hr></hr>
+          <h3>***Preview***</h3>
+          <Score data={this.state.data} />
+        </div>
+      );
+    }
   }
 }

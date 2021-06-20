@@ -103,7 +103,7 @@ export default class CreateScore extends React.Component {
             </tr>
           </tbody>
         </table>
-        <button onClick={() => this.handleSaveClick()}>保存</button>
+        <div><button onClick={() => this.handleSaveClick()}>保存</button></div>
         <textarea id="edit-area"
           value={this.state.data}
           onChange={e => this.handleDataChange(e)}
