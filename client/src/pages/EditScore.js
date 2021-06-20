@@ -2,10 +2,11 @@ import axios from "axios";
 import React from "react";
 import Score from "../components/Score";
 
-export default class CreateScore extends React.Component {
+export default class EditScore extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: "",
       title: "",
       musicRoot: "",
       musicKey: "",
@@ -18,6 +19,20 @@ export default class CreateScore extends React.Component {
   ]
 
   musicKeys = ["Major", "minor"]
+
+  componentDidMount() {
+    axios.get(`/api/scores/${this.props.match.params.id}`)
+      .then(res => {
+        this.setState({
+          id: res.data.id,
+          title: res.data.title,
+          musicRoot: res.data.key.split(" ")[0],
+          musicKey: res.data.key.split(" ")[1],
+          data: res.data.data
+        });
+      })
+      .catch(e => console.error(e));
+  }
 
   handleTitleChange(e) {
     this.setState({title: e.target.value});
@@ -47,14 +62,13 @@ export default class CreateScore extends React.Component {
       return;
     }
 
-    axios.post("/api/scores", {
+    axios.put(`/api/scores/${current.id}`, {
       title: current.title,
       key: `${current.musicRoot} ${current.musicKey}`,
       data: current.data
     })
     .then(res => {
       alert("保存しました");
-      this.props.history.push(`/scores/${res.data.id}`);
     })
     .catch(e => {
       alert("保存に失敗しました");
@@ -64,7 +78,7 @@ export default class CreateScore extends React.Component {
 
   render() {
     return (
-      <div id="create-score">
+      <div id="edit-score">
         <table id="description">
           <tbody>
             <tr>
@@ -81,8 +95,8 @@ export default class CreateScore extends React.Component {
               <td>
                 <select
                   value={this.state.musicRoot}
-                  onChange={e => this.handleMusicRootChange(e)}>
-                  <option value="" disabled>(選択してください)</option>
+                  onChange={e => this.handleMusicRootChange(e)}
+                >
                   {this.musicRoots.map((root) => {
                     return (
                       <option value={root} key={root}>{root}</option>
@@ -91,8 +105,8 @@ export default class CreateScore extends React.Component {
                 </select>
                 <select
                   value={this.state.musicKey}
-                  onChange={e => this.handleMusicKeyChange(e)}>
-                  <option value="" disabled>(選択してください)</option>
+                  onChange={e => this.handleMusicKeyChange(e)}
+                >
                   {this.musicKeys.map((musicKey) => {
                     return (
                       <option value={musicKey} key={musicKey}>{musicKey}</option>
@@ -103,7 +117,7 @@ export default class CreateScore extends React.Component {
             </tr>
           </tbody>
         </table>
-        <button onClick={() => this.handleSaveClick()}>保存</button>
+        <div><button onClick={() => this.handleSaveClick()}>保存</button></div>
         <textarea id="edit-area"
           value={this.state.data}
           onChange={e => this.handleDataChange(e)}

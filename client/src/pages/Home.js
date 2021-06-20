@@ -26,12 +26,12 @@ export default class Home extends React.Component {
         <h2>コード譜一覧</h2>
         <ul id="scores-index">
           {this.state.scores.map((score) => {
+            if (score.id === "") return null;
             return (
-              <Link
-                key={score.id}
-                to={`/scores/${score.id}`}>
-                <li>{score.title}</li>
-              </Link>
+              <li key={score.id}>
+                <Link to={`/scores/${score.id}`}>{score.title}</Link>
+                <Link to={`/scores/${score.id}/edit`}><button>編集</button></Link>
+              </li>
             );
           })}
         </ul>

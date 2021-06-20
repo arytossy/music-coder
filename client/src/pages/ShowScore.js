@@ -25,10 +25,6 @@ export default class ShowScore extends React.Component {
       .catch((e) => console.error(e));
   }
 
-  handleChange(e) {
-    this.setState({data: e.target.value});
-  }
-
   render() {
     return (
       <div id="show-score">
@@ -38,10 +34,6 @@ export default class ShowScore extends React.Component {
             <tr><th>調：</th><td>{this.state.key}</td></tr>
           </tbody>
         </table>
-        <textarea id="test-output"
-          defaultValue={this.state.data}
-          onChange={e => this.handleChange(e)}
-        ></textarea>
         <hr></hr>
         <Score data={this.state.data} />
       </div>

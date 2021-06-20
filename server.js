@@ -7,10 +7,6 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.get("/api", (req, res) => {
-  res.json({message:"Welcome to API!"});
-});
-
 app.route("/api/scores")
   .get(async (req, res) => {
     const scores = await Score.findAll({attributes: ["id", "title"]});
@@ -25,6 +21,14 @@ app.route("/api/scores/:id")
   .get(async (req, res) => {
     const score = await Score.findByPk(req.params.id);
     res.json(score.toJSON());
+  })
+  .put(async (req, res) => {
+    const result = await Score.update(req.body, {
+      where: {
+        id: req.params.id
+      }
+    });
+    res.json(result);
   });
 
 app.use("/dist", express.static(path.resolve(__dirname, "client/dist")));
