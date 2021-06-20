@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import "./Layout.css";
 
 export default function Layout(props) {
   return (
     <div id="app">
       <header>
-        <h2>コード譜置き場</h2>
+        <Link to="/"><h1>コード譜置き場</h1></Link>
       </header>
       <main>
         {props.children}

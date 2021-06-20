@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { Link } from "react-router-dom";
+import "./Home.css";
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -21,8 +22,8 @@ export default class Home extends React.Component {
   render() {
     return (
       <div id="home">
-        <h3>コード譜一覧</h3>
-        <ul>
+        <h2>コード譜一覧</h2>
+        <ul id="scores-index">
           {this.state.scores.map((score) => {
             return (
               <Link
