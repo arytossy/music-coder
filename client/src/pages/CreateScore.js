@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import Editor from "../components/Editor";
 import Score from "../components/Score";
 
 export default class CreateScore extends React.Component {
@@ -104,8 +105,8 @@ export default class CreateScore extends React.Component {
           </tbody>
         </table>
         <div><button onClick={() => this.handleSaveClick()}>保存</button></div>
-        <textarea id="edit-area"
-          value={this.state.data}
+        <Editor
+          data={this.state.data}
           onChange={e => this.handleDataChange(e)}
         />
         <hr></hr>

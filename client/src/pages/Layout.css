@@ -1,4 +1,11 @@
+#app {
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
+}
+
 header {
+  flex: 0 auto;
   background-color: #eee;
   box-shadow: 0 1px 10px #aaa;
 }
@@ -18,15 +25,14 @@ header a:hover {
 }
 
 main {
+  flex: auto;
   padding: 10px 10px;
 }
 
 footer {
+  flex: 0 auto;
   background-color: #aaa;
   color: #fff;
   text-align: center;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
   padding: 5px 0;
 }

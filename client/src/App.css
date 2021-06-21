@@ -5,6 +5,8 @@
 
 body {
   margin: 0;
+  font-size: 20px;
+  word-break: break-all;
 }
 
 ul {
@@ -21,11 +23,13 @@ a:hover {
 }
 
 button {
-  padding: 10px 15px;
+  margin: 5px;
+  padding: 7px 15px;
   background-color: #aee;
   border-radius: 5px;
   border: none;
   color: #555;
+  font-size: 20px;
 }
 
 button.danger {
@@ -38,4 +42,40 @@ button:hover {
 
 button.danger:hover {
   background-color: #d99;
+}
+
+#description {
+  font-size: 25px;
+}
+
+#description th {
+  text-align: end;
+  min-width: 130px;
+}
+
+input[type="text"] {
+  padding: 7px 10px;
+  height: 42px;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  font-size: 20px;
+}
+
+select {
+  padding: 5px 10px;
+  height: 44px;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  font-size: 20px;
+}
+
+textarea {
+  padding: 7px 10px;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  font-size: 20px;
+}
+
+input[type="text"]:focus, select:focus, textarea:focus {
+  outline: 2px solid #aaf;
 }

@@ -2,7 +2,6 @@ import axios from "axios";
 import React from "react";
 import { Link } from "react-router-dom";
 import Score from "../components/Score";
-import "./ShowScore.css";
 
 export default class ShowScore extends React.Component {
   constructor(props) {

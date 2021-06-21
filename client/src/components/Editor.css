@@ -1,0 +1,23 @@
+#editor-wrapper {
+  display: inline-block;
+  position: relative;
+  min-height: 70px;
+  min-width: 200px;
+  max-width: 100%;
+}
+
+#editor {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  resize: none;
+}
+
+#dummy {
+  width: fit-content;
+  padding: 10px 27px 35px 12px;
+  white-space: pre-wrap;
+  visibility: hidden;
+}

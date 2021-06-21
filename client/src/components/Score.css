@@ -18,7 +18,7 @@
 }
 
 .root, .base-root {
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .accidental, .base-accidental {
@@ -28,7 +28,7 @@
 }
 
 .slash {
-  font-size: 20px;
+  font-size: 25px;
   display: inline-block;
   padding: 0 3px;
 }
