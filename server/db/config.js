@@ -1,5 +1,5 @@
 const parse = require("pg-connection-string").parse;
-const config = parse(process.env.DATABASE_URL || "");
+const info = parse(process.env.DATABASE_URL || "");
 
 module.exports = {
   development: {
@@ -10,10 +10,10 @@ module.exports = {
     dialect: "postgres"
   },
   production: {
-    username: config.user,
-    password: config.password,
-    database: config.database,
-    host: config.host,
+    username: info.user,
+    password: info.password,
+    database: info.database,
+    host: info.host,
     dialect: "postgres",
     dialectOptions: {
       ssl: {
