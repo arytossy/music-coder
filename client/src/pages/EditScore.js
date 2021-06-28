@@ -1,76 +1,54 @@
 import axios from "axios";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
 import Editor from "../components/Editor";
 import Score from "../components/Score";
 
-export default class EditScore extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: "",
-      title: "",
-      musicRoot: "",
-      musicKey: "",
-      data: ""
-    }
-  }
+export default function EditScore() {
+  const history = useHistory();
+  const { id } = useParams();
 
-  musicRoots = [
+  const [title, setTitle] = useState("");
+  const [tonic, setTonic] = useState("");
+  const [keyType, setKeyType] = useState("");
+  const [data, setData] = useState("");
+
+  const TonicList = [
     "C","C+","D-","D","D+","E-","E","F","F+","G-","G","G+","A-","A","A+","B-","B"
   ]
 
-  musicKeys = ["Major", "minor"]
-
-  componentDidMount() {
-    axios.get(`/api/scores/${this.props.match.params.id}`)
+  const keyTypeList = ["Major", "minor"]
+  
+  useEffect(() => {
+    axios.get(`/api/scores/${id}`)
       .then(res => {
-        this.setState({
-          id: res.data.id,
-          title: res.data.title,
-          musicRoot: res.data.key.split(" ")[0],
-          musicKey: res.data.key.split(" ")[1],
-          data: res.data.data
-        });
+        setTitle(res.data.title);
+        setTonic(res.data.key.split(" ")[0]);
+        setKeyType(res.data.key.split(" ")[1]);
+        setData(res.data.data);
       })
       .catch(e => console.error(e));
-  }
+  }, []);
 
-  handleTitleChange(e) {
-    this.setState({title: e.target.value});
-  }
-
-  handleMusicRootChange(e) {
-    this.setState({musicRoot: e.target.value});
-  }
-
-  handleMusicKeyChange(e) {
-    this.setState({musicKey: e.target.value});
-  }
-
-  handleDataChange(e) {
-    this.setState({data: e.target.value});
-  }
-
-  handleSaveClick() {
-    const current = this.state;
+  function handleSaveClick() {
     if (
-      current.title === "" ||
-      current.musicRoot === "" ||
-      current.musicKey === "" ||
-      current.data === ""
+      title === "" ||
+      tonic === "" ||
+      keyType === "" ||
+      data === ""
     ) {
       alert("入力されていないところがあります");
       return;
     }
 
-    axios.put(`/api/scores/${current.id}`, {
-      title: current.title,
-      key: `${current.musicRoot} ${current.musicKey}`,
-      data: current.data
+    axios.put(`/api/scores/${id}`, {
+      title: title,
+      key: `${tonic} ${keyType}`,
+      data: data
     })
     .then(res => {
       alert("保存しました");
+      history.push(`/scores/${id}`);
     })
     .catch(e => {
       alert("保存に失敗しました");
@@ -78,65 +56,63 @@ export default class EditScore extends React.Component {
     });
   }
 
-  render() {
-    if (this.state.id === "") {
-      return (
-        <div id="not-found">
-          <p>データが存在しません...</p>
-          <Link to="/"><button>戻る</button></Link>
-        </div>
-      );
-    } else {
-      return (
-        <div id="edit-score">
-          <table id="description">
-            <tbody>
-              <tr>
-                <th>タイトル：</th>
-                <td>
-                  <input type="text"
-                    value={this.state.title}
-                    onChange={e => this.handleTitleChange(e)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th>調：</th>
-                <td>
-                  <select
-                    value={this.state.musicRoot}
-                    onChange={e => this.handleMusicRootChange(e)}
-                  >
-                    {this.musicRoots.map((root) => {
-                      return (
-                        <option value={root} key={root}>{root}</option>
-                      );
-                    })}
-                  </select>
-                  <select
-                    value={this.state.musicKey}
-                    onChange={e => this.handleMusicKeyChange(e)}
-                  >
-                    {this.musicKeys.map((musicKey) => {
-                      return (
-                        <option value={musicKey} key={musicKey}>{musicKey}</option>
-                      );
-                    })}
-                  </select>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div><button onClick={() => this.handleSaveClick()}>保存</button></div>
-          <Editor
-            data={this.state.data}
-            onChange={e => this.handleDataChange(e)}
-          />
-          <hr></hr>
-          <h3>***Preview***</h3>
-          <Score data={this.state.data} />
-        </div>
-      );
-    }
+  if (title === "") {
+    return (
+      <div id="not-found">
+        <p>データが存在しません...</p>
+        <Link to="/"><button>戻る</button></Link>
+      </div>
+    );
+  } else {
+    return (
+      <div id="edit-score">
+        <table id="description">
+          <tbody>
+            <tr>
+              <th>タイトル：</th>
+              <td>
+                <input type="text"
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>調：</th>
+              <td>
+                <select
+                  value={tonic}
+                  onChange={e => setTonic(e.target.value)}
+                >
+                  {TonicList.map((val) => {
+                    return (
+                      <option value={val} key={val}>{val}</option>
+                    );
+                  })}
+                </select>
+                <select
+                  value={keyType}
+                  onChange={e => setKeyType(e.target.value)}
+                >
+                  {keyTypeList.map((val) => {
+                    return (
+                      <option value={val} key={val}>{val}</option>
+                    );
+                  })}
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div><button onClick={() => handleSaveClick()}>保存</button></div>
+        <Editor
+          data={data}
+          onChange={e => setData(e.target.value)}
+        />
+        <hr></hr>
+        <h3>***Preview***</h3>
+        <Score data={data} />
+      </div>
+    );
   }
 }

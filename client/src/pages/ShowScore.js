@@ -1,63 +1,59 @@
 import axios from "axios";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
 import Score from "../components/Score";
 
-export default class ShowScore extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: "",
-      title: "",
-      key: "",
-      data: "",
-      createdAt: null,
-      updatedAt: null
-    }
-  }
+export default function ShowScore() {
 
-  componentDidMount() {
-    const id = this.props.match.params.id;
+  const history = useHistory();
+  const { id } = useParams();
+
+  const [score, setScore] = useState({
+    id: "",
+    title: "",
+    key: "",
+    data: "",
+    createdAt: null,
+    updatedAt: null
+  });
+
+  useEffect(() => {
     axios.get(`/api/scores/${id}`)
-      .then((res) => {
-        this.setState(res.data);
-      })
+      .then((res) => setScore(res.data))
       .catch((e) => console.error(e));
-  }
+  }, []);
 
-  handleDeleteClick(e) {
-    if (confirm(`以下を削除します！\nタイトル：${this.state.title}`))
-      axios.delete(`/api/scores/${this.state.id}`)
+  function handleDeleteClick() {
+    if (confirm(`以下を削除します！\nタイトル：${score.title}`))
+      axios.delete(`/api/scores/${score.id}`)
         .then(res => {
           alert("削除しました");
-          this.props.history.push("/");
+          history.push("/");
         })
         .catch(e => console.error(e));
   }
 
-  render() {
-    if (this.state.id === "") {
-      return (
-        <div id="not-found">
-          <p>データが存在しません...</p>
-          <Link to="/"><button>戻る</button></Link>
-        </div>
-      );
-    } else {
-      return (
-        <div id="show-score">
-          <table id="description">
-            <tbody>
-              <tr><th>タイトル：</th><td>{this.state.title}</td></tr>
-              <tr><th>調：</th><td>{this.state.key}</td></tr>
-            </tbody>
-          </table>
-          <Link to={`/scores/${this.state.id}/edit`}><button>編集</button></Link>
-          <button className="danger" onClick={() => this.handleDeleteClick()}>削除</button>
-          <hr></hr>
-          <Score data={this.state.data} />
-        </div>
-      );
-    }
+  if (score.id === "") {
+    return (
+      <div id="not-found">
+        <p>データが存在しません...</p>
+        <Link to="/"><button>戻る</button></Link>
+      </div>
+    );
+  } else {
+    return (
+      <div id="show-score">
+        <table id="description">
+          <tbody>
+            <tr><th>タイトル：</th><td>{score.title}</td></tr>
+            <tr><th>調：</th><td>{score.key}</td></tr>
+          </tbody>
+        </table>
+        <Link to={`/scores/${score.id}/edit`}><button>編集</button></Link>
+        <button className="danger" onClick={() => handleDeleteClick()}>削除</button>
+        <hr></hr>
+        <Score data={score.data} />
+      </div>
+    );
   }
 }

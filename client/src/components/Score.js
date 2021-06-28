@@ -2,15 +2,15 @@ import React from "react"
 import Line from "./Line";
 import "./Score.css";
 
-export default class Score extends React.Component {
+export default function Score(props) {
 
-  transform(accidental) {
+  function transform(accidental) {
     if (accidental === "+") return "♯";
     if (accidental === "-") return "♭";
     return "";
   }
 
-  parse(data) {
+  function parse(data) {
     const strLines = data.split("\n");
     const lines = strLines.map((strLine) => {
       const strBlocks = strLine.split("[");
@@ -25,11 +25,11 @@ export default class Score extends React.Component {
         const tmp3 = (tmp2[0].match(/^[A-G][+-]?/) || [""])[0];
         return {
           root: tmp3.charAt(0),
-          accidental: this.transform(tmp3.charAt(1)),
+          accidental: transform(tmp3.charAt(1)),
           quality: tmp2[0].replace(tmp3, ""),
           base: {
             root: tmp2.length === 2 ? tmp2[1].charAt(0) : "",
-            accidental: tmp2.length === 2 ? this.transform(tmp2[1].charAt(1)) : ""
+            accidental: tmp2.length === 2 ? transform(tmp2[1].charAt(1)) : ""
           },
           lyrics: tmp1[1]
         };
@@ -39,17 +39,16 @@ export default class Score extends React.Component {
     return {lines: lines};
   }
 
-  render() {
-    const score = this.parse(this.props.data);
-    return (
-      <div id="score">
-        {score.lines.map((line, i)=>{return(
-          <Line
-            key={i}
-            blocks={line.blocks}
-          />
-        )})}
-      </div>
-    );
-  }
+  const score = parse(props.data);
+  
+  return (
+    <div id="score">
+      {score.lines.map((line, i)=>{return(
+        <Line
+          key={i}
+          blocks={line.blocks}
+        />
+      )})}
+    </div>
+  );
 }
