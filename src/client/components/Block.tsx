@@ -1,6 +1,15 @@
 import React from "react"
 
-export default function Block(props) {
+export default function Block(props: {
+  root: string;
+  accidental: "" | "♯" | "♭";
+  quality: string;
+  base: {
+      root: string;
+      accidental: "" | "♯" | "♭";
+  };
+  lyrics: string;
+}) {
   return (
     <div className="block">
       <div className="chord">

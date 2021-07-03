@@ -30,6 +30,7 @@
 		"mhutchie.git-graph",
 		"editorconfig.editorconfig",
 		"sohamkamani.code-eol",
-		"ms-azuretools.vscode-docker"
+		"ms-azuretools.vscode-docker",
+		"fwgood.webpack-4-snippets"
 	]
 }

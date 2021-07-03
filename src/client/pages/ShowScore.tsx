@@ -6,19 +6,19 @@ import Score from "../components/Score";
 export default function ShowScore() {
 
   const history = useHistory();
-  const { id } = useParams();
+  const { id } = useParams<{id: string}>();
 
   const [score, setScore] = useState({
     id: "",
     title: "",
     key: "",
     data: "",
-    createdAt: null,
-    updatedAt: null
+    createdAt: new Date(),
+    updatedAt: new Date()
   });
 
   useEffect(() => {
-    axios.get(`/api/scores/${id}`)
+    axios.get<typeof score>(`/api/scores/${id}`)
       .then((res) => setScore(res.data))
       .catch((e) => console.error(e));
   }, []);
@@ -26,7 +26,7 @@ export default function ShowScore() {
   function handleDeleteClick() {
     if (confirm(`以下を削除します！\nタイトル：${score.title}`))
       axios.delete(`/api/scores/${score.id}`)
-        .then(res => {
+        .then(() => {
           alert("削除しました");
           history.push("/");
         })

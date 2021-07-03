@@ -1,5 +1,6 @@
 'use strict';
 
+/** @type {{up: (queryInterface: import("sequelize").QueryInterface, Sequelize: import("sequelize")) => void, down: (queryInterface: import("sequelize").QueryInterface, Sequelize: import("sequelize")) => void}} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Scores', {

@@ -1,10 +1,21 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Block from "./Block";
 
-export default function Line(props) {
+export default function Line(props: {
+  blocks: {
+    root: string;
+    accidental: "" | "♯" | "♭";
+    quality: string;
+    base: {
+        root: string;
+        accidental: "" | "♯" | "♭";
+    };
+    lyrics: string;
+  }[]
+}) {
 
   const length = props.blocks.length;
-  let elements = [];
+  let elements: ReactNode[] = [];
 
   props.blocks.map((block, i) => {
     elements.push(

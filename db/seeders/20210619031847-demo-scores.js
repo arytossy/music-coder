@@ -2,6 +2,7 @@
 
 const uuid = require("uuid");
 
+/** @type {{up: (queryInterface: import("sequelize").QueryInterface, Sequelize: import("sequelize")) => void, down: (queryInterface: import("sequelize").QueryInterface, Sequelize: import("sequelize")) => void}} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('Scores', [{
@@ -31,6 +32,6 @@ module.exports = {
   },
   
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('Scores', null, {});
+    await queryInterface.bulkDelete('Scores', {where: null}, {});
   }
 };

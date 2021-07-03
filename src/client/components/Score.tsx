@@ -2,15 +2,30 @@ import React from "react"
 import Line from "./Line";
 import "./Score.css";
 
-export default function Score(props) {
+type ScoreElements = {
+  lines: {
+    blocks: {
+        root: string;
+        accidental: "" | "♯" | "♭";
+        quality: string;
+        base: {
+            root: string;
+            accidental: "" | "♯" | "♭";
+        };
+        lyrics: string;
+    }[];
+}[]
+}
 
-  function transform(accidental) {
+export default function Score(props: {data: string}) {
+
+  function transform(accidental: string): "♯" | "♭" | "" {
     if (accidental === "+") return "♯";
     if (accidental === "-") return "♭";
     return "";
   }
 
-  function parse(data) {
+  function parse(data: string): ScoreElements {
     const strLines = data.split("\n");
     const lines = strLines.map((strLine) => {
       const strBlocks = strLine.split("[");

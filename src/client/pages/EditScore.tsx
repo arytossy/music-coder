@@ -6,7 +6,7 @@ import Score from "../components/Score";
 
 export default function EditScore() {
   const history = useHistory();
-  const { id } = useParams();
+  const { id } = useParams<{id: string}>();
 
   const [title, setTitle] = useState("");
   const [tonic, setTonic] = useState("");

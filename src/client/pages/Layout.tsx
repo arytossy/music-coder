@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import "./Layout.css";
 
-export default function Layout(props) {
+export default function Layout(props: {children: ReactNode}) {
   return (
     <div id="app">
       <header>

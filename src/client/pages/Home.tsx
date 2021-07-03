@@ -1,24 +1,29 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Home.css";
 
+type ScoreIndex = {
+  id: string,
+  title: string
+}[];
+
 export default function Home() {
 
-  const [scores, setScores] = useState([{id: "", title: ""}]);
+  const [scores, setScores] = useState<ScoreIndex>([{id: "", title: ""}]);
 
   useEffect(() => {
-    axios.get("/api/scores")
+    axios.get<ScoreIndex>("/api/scores")
       .then((res) => setScores(res.data))
       .catch((e) => console.error(e));
   }, []);
 
-  function handleDeleteClick(event) {
-    const id = event.target.dataset.id;
-    const title = event.target.dataset.title;
+  function handleDeleteClick(event: MouseEvent<HTMLButtonElement>) {
+    const id = event.currentTarget.dataset.id;
+    const title = event.currentTarget.dataset.title;
     if (confirm(`以下を削除します！\nタイトル：${title}`))
       axios.delete(`/api/scores/${id}`)
-        .then(res => {
+        .then(() => {
           alert("削除しました");
           setScores(scores.filter((score) => score.id !== id));
         })
