@@ -19,10 +19,10 @@ app.route("/api/scores/:id")
   .delete((req, res) => scores.destroy(req.params.id, res))
 ;
 
-app.use("/dist", express.static(path.resolve(process.cwd(), "client/dist")));
+app.use("/public", express.static(path.resolve(process.cwd(), "public")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(process.cwd(), "client/index.html"));
+  res.sendFile(path.resolve(process.cwd(), "public/index.html"));
 });
 
 app.listen(port, () => {

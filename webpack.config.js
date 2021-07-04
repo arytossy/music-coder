@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const IgnoreDynamicRequire = require("webpack-ignore-dynamic-require");
 
 /** @type import("webpack").Configuration[] */
 module.exports = [
@@ -41,6 +42,7 @@ module.exports = [
   },
   {
     name: "server",
+    target: "node",
     entry: "./src/server/index.ts",
     mode: "development",
     module: {
@@ -55,12 +57,13 @@ module.exports = [
     resolve:{
       extensions: [".js",".ts", ".tsx"],
       alias: {
-        "@db/*": "./db/*"
+        "@db": path.resolve(__dirname, "db")
       }
     },
     output: {
       path: __dirname,
       filename: "server.bundle.js"
     },
+    plugins: [new IgnoreDynamicRequire()]
   }
 ];
