@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import Editor from "../components/Editor";
 import Score from "../components/Score";
+import { KeyTypeList, NoteList } from "../utils/utils";
 
 export default function CreateScore() {
 
@@ -12,12 +13,6 @@ export default function CreateScore() {
   const [tonic, setTonic] = useState("");
   const [keyType, setKeyType] = useState("");
   const [data, setData] = useState("");
-
-  const TonicList = [
-    "C","C+","D-","D","D+","E-","E","F","F+","G-","G","G+","A-","A","A+","B-","B"
-  ]
-
-  const keyTypeList = ["Major", "minor"]
 
   function handleSaveClick() {
     if (
@@ -65,7 +60,7 @@ export default function CreateScore() {
                 value={tonic}
                 onChange={e => setTonic(e.target.value)}>
                 <option value="" disabled>(選択してください)</option>
-                {TonicList.map((val) => {
+                {NoteList.slice(7, 23).map((val) => {
                   return (
                     <option value={val} key={val}>{val}</option>
                   );
@@ -75,7 +70,7 @@ export default function CreateScore() {
                 value={keyType}
                 onChange={e => setKeyType(e.target.value)}>
                 <option value="" disabled>(選択してください)</option>
-                {keyTypeList.map((val) => {
+                {KeyTypeList.map((val) => {
                   return (
                     <option value={val} key={val}>{val}</option>
                   );
@@ -88,6 +83,7 @@ export default function CreateScore() {
       <div><button onClick={() => handleSaveClick()}>保存</button></div>
       <Editor
         data={data}
+        setData={(val) => setData(val)}
         onChange={e => setData(e.target.value)}
       />
       <hr></hr>

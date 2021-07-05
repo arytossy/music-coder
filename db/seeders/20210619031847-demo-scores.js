@@ -24,8 +24,8 @@ module.exports = {
     {
       id: uuid.v4(),
       title: "ていやっ",
-      key: "D- Major",
-      data: "[D-add9]よっ\nと[D-M7/F]ほっ\nと[G-sus4]うんと[B-7/D]すんと\nの[E-m]どっこら[A-7-5/D]しょー\nからの[D-]Yeah★",
+      key: "-D Major",
+      data: "[-Dadd9]よっ\nと[-DM7/F]ほっ\nと[-Gsus4]うんと[-B7/D]すんと\nの[-Em]どっこら[-A7-5/D]しょー\nからの[-D]Yeah★",
       createdAt: new Date(),
       updatedAt: new Date()
     }]);

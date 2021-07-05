@@ -1,18 +1,8 @@
 import React, { ReactNode } from "react";
+import { ScoreLine } from "../utils/utils";
 import Block from "./Block";
 
-export default function Line(props: {
-  blocks: {
-    root: string;
-    accidental: "" | "♯" | "♭";
-    quality: string;
-    base: {
-        root: string;
-        accidental: "" | "♯" | "♭";
-    };
-    lyrics: string;
-  }[]
-}) {
+export default function Line(props: ScoreLine) {
 
   const length = props.blocks.length;
   let elements: ReactNode[] = [];
@@ -28,7 +18,7 @@ export default function Line(props: {
       />
     );
     if (i + 1 < length) {
-      elements.push(<div className="separator" key="i"></div>);
+      elements.push(<div className="separator" key={i}></div>);
     }
   });
 

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import Editor from "../components/Editor";
 import Score from "../components/Score";
+import { KeyTypeList, NoteList } from "../utils/utils";
 
 export default function EditScore() {
   const history = useHistory();
@@ -12,12 +13,6 @@ export default function EditScore() {
   const [tonic, setTonic] = useState("");
   const [keyType, setKeyType] = useState("");
   const [data, setData] = useState("");
-
-  const TonicList = [
-    "C","C+","D-","D","D+","E-","E","F","F+","G-","G","G+","A-","A","A+","B-","B"
-  ]
-
-  const keyTypeList = ["Major", "minor"]
   
   useEffect(() => {
     axios.get(`/api/scores/${id}`)
@@ -84,7 +79,7 @@ export default function EditScore() {
                   value={tonic}
                   onChange={e => setTonic(e.target.value)}
                 >
-                  {TonicList.map((val) => {
+                  {NoteList.slice(7, 23).map((val) => {
                     return (
                       <option value={val} key={val}>{val}</option>
                     );
@@ -94,7 +89,7 @@ export default function EditScore() {
                   value={keyType}
                   onChange={e => setKeyType(e.target.value)}
                 >
-                  {keyTypeList.map((val) => {
+                  {KeyTypeList.map((val) => {
                     return (
                       <option value={val} key={val}>{val}</option>
                     );
@@ -107,6 +102,7 @@ export default function EditScore() {
         <div><button onClick={() => handleSaveClick()}>保存</button></div>
         <Editor
           data={data}
+          setData={(val) => setData(val)}
           onChange={e => setData(e.target.value)}
         />
         <hr></hr>

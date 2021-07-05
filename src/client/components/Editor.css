@@ -1,3 +1,11 @@
+#show-snipets {
+  display: block;
+  background-color: #afa;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+}
+
 #editor-wrapper {
   display: inline-block;
   position: relative;

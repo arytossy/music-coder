@@ -1,15 +1,7 @@
 import React from "react"
+import { ScoreBlock } from "../utils/utils";
 
-export default function Block(props: {
-  root: string;
-  accidental: "" | "♯" | "♭";
-  quality: string;
-  base: {
-      root: string;
-      accidental: "" | "♯" | "♭";
-  };
-  lyrics: string;
-}) {
+export default function Block(props: ScoreBlock) {
   return (
     <div className="block">
       <div className="chord">
