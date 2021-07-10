@@ -20,7 +20,9 @@ export default function Editor(props: {
       + value
       + old.substring(end)
     );
-    focusedBox.setSelectionRange(start + value.length, start + value.length);
+    setTimeout(() => {
+      focusedBox.setSelectionRange(start + value.length, start + value.length);
+    }, 0);
   }
 
   return (

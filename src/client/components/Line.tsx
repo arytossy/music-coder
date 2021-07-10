@@ -9,7 +9,7 @@ export default function Line(props: ScoreLine) {
 
   props.blocks.map((block, i) => {
     elements.push(
-      <Block key={i}
+      <Block key={`block_${i}`}
         root={block.root}
         accidental={block.accidental}
         quality={block.quality}
@@ -18,7 +18,7 @@ export default function Line(props: ScoreLine) {
       />
     );
     if (i + 1 < length) {
-      elements.push(<div className="separator" key={i}></div>);
+      elements.push(<div className="separator" key={`separator_${i}`}></div>);
     }
   });
 
