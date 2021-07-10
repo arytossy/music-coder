@@ -8,6 +8,8 @@ export default function ChordSnipets(props: {onInsert: ((value: string) => void)
   const [root, setRoot] = useState("");
   const [quality, setQuality] = useState("");
   const [base, setBase] = useState("");
+  const [expandRoot, setExpandRoot] = useState(false);
+  const [expandBase, setExpandBase] = useState(false);
 
   return (
     <div id="chord-snipets" style={position} onMouseDown={(e) => e.preventDefault()}>
@@ -17,8 +19,8 @@ export default function ChordSnipets(props: {onInsert: ((value: string) => void)
       </div>
       <div id="chord-snipets-body">
         <fieldset>
-          <legend>Root</legend>
-          {NoteList.map((val) => {
+          <legend onClick={() => setExpandRoot(!expandRoot)}>Root</legend>
+          {NoteList.filter((_,i) => expandRoot ? true : i >= 7 && i <= 23).map((val) => {
             return (
               <button
                 className={val === root ? "selected" : ""}
@@ -43,8 +45,8 @@ export default function ChordSnipets(props: {onInsert: ((value: string) => void)
           })}
         </fieldset>
         <fieldset>
-          <legend>Base</legend>
-          {["", ...NoteList].map((val) => {
+          <legend onClick={() => setExpandBase(!expandBase)}>Base</legend>
+          {["", ...NoteList.filter((_,i) => expandBase ? true : i >= 7 && i <= 23)].map((val) => {
             return (
               <button
                 className={val === base ? "selected" : ""}
