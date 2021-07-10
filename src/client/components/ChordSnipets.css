@@ -14,6 +14,7 @@
 #header-content {
   flex: 1;
   padding-left: 20px;
+  touch-action: none;
 }
 
 #dismiss {
