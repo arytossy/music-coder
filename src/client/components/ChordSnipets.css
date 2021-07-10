@@ -32,8 +32,9 @@
 }
 
 #chord-snipets-body {
-  /* display: flex; */
   padding: 10px 20px;
+  max-height: 80vh;
+  overflow-y: scroll;
 }
 
 #chord-snipets-footer {
