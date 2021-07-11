@@ -1,0 +1,48 @@
+#modulate-dialog-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(170, 170, 170, 0.5);
+  display: flex;
+  justify-content: center;;
+  align-items: center;
+}
+
+#modulate-dialog {
+  background-color: #fff;
+}
+
+#modulate-dialog-header {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #eee;
+}
+
+#modulate-dialog-header span {
+  display: inline-block;
+  line-height: 50px;
+}
+
+#modulate-dialog-header span.title {
+  padding-left: 10px;
+}
+
+#modulate-dialog-header span.dismiss {
+  width: 50px;
+  height: 50px;
+  background-color: #eaa;
+  color: #fff;
+  text-align: center;
+  font-size: 45px;
+}
+
+#modulate-dialog-body {
+  padding: 10px 25px;
+}
+
+#modulate-dialog-footer {
+  text-align: center;
+}

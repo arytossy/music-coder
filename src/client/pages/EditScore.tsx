@@ -107,7 +107,7 @@ export default function EditScore() {
         />
         <hr></hr>
         <h3>***Preview***</h3>
-        <Score data={data} />
+        <Score data={data} offset={0}/>
       </div>
     );
   }

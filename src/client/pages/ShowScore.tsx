@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
+import ModulateDialog from "../components/ModulateDialog";
 import Score from "../components/Score";
 
 export default function ShowScore() {
@@ -16,6 +17,9 @@ export default function ShowScore() {
     createdAt: new Date(),
     updatedAt: new Date()
   });
+
+  const [offset, setOffset] = useState(0);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     axios.get<typeof score>(`/api/scores/${id}`)
@@ -46,13 +50,22 @@ export default function ShowScore() {
         <table id="description">
           <tbody>
             <tr><th>タイトル：</th><td>{score.title}</td></tr>
-            <tr><th>調：</th><td>{score.key}</td></tr>
+            <tr><th>調：</th><td>{score.key}<button onClick={() => setShow(true)}>転調</button></td></tr>
           </tbody>
         </table>
         <Link to={`/scores/${score.id}/edit`}><button>編集</button></Link>
         <button className="danger" onClick={() => handleDeleteClick()}>削除</button>
         <hr></hr>
-        <Score data={score.data} />
+        <Score data={score.data} offset={offset} />
+
+        {show ?
+          <ModulateDialog
+            originKey={score.key}
+            onClose={() => setShow(false)}
+            onModulate={(offset) => setOffset(offset)}
+          /> :
+          null
+        }
       </div>
     );
   }

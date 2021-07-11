@@ -3,9 +3,9 @@ import { parse } from "../utils/utils";
 import Line from "./Line";
 import "./Score.css";
 
-export default function Score(props: {data: string}) {
+export default function Score(props: {data: string, offset: number}) {
 
-  const score = parse(props.data);
+  const score = parse(props.data, props.offset);
   
   return (
     <div id="score">

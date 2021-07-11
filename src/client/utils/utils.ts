@@ -23,7 +23,7 @@ export function transform(accidental: string): AccidentalSymbols {
   return "";
 }
 
-export function parse(data: string): ScoreObject {
+export function parse(data: string, offset: number): ScoreObject {
   const strLines = data.split("\n");
   const lines = strLines.map((strLine) => {
     const strBlocks = strLine.split("[");
@@ -33,23 +33,51 @@ export function parse(data: string): ScoreObject {
       strBlocks[0] = "]" + strBlocks[0];
     }
     const blocks = strBlocks.map((strBlock) => {
-      const tmp1 = strBlock.split("]");
-      const tmp2 = tmp1[0].split("/");
-      const tmp3 = (tmp2[0].match(/^[+-]{0,2}[A-G]/) || [""])[0];
+      const $fullChord$lyrics = strBlock.split("]");
+      const $chord$base = $fullChord$lyrics[0].split("/");
+      let note = ($chord$base[0].match(/^[+-]{0,2}[A-G]/) || [""])[0];
+      const quality = $chord$base[0].replace(note, "");
+      let base = $chord$base[1] ? $chord$base[1] : "";
+      note = modulate(note, offset);
+      base = modulate(base, offset);
       return {
-        root: (tmp3.match(/[A-G]$/) || [""])[0],
-        accidental: transform((tmp3.match(/^[+-]{0,2}/) || [""])[0]),
-        quality: tmp2[0].replace(tmp3, ""),
+        root: (note.match(/[A-G]$/) || [""])[0],
+        accidental: transform((note.match(/^[+-]{0,2}/) || [""])[0]),
+        quality: quality,
         base: {
-          root: tmp2.length === 2 ? (tmp2[1].match(/[A-G]$/) || [""])[0] : "",
-          accidental: tmp2.length === 2 ? transform((tmp2[1].match(/^[+-]{0,2}/) || [""])[0]) : ""
+          root: (base.match(/[A-G]$/) || [""])[0],
+          accidental: transform((base.match(/^[+-]{0,2}/) || [""])[0])
         },
-        lyrics: tmp1[1]
+        lyrics: $fullChord$lyrics[1]
       };
     });
     return {blocks: blocks};
   });
   return {lines: lines};
+}
+
+export function getModulateOffset(
+  origin: {tonic: string, keyType: string},
+  modulate: {tonic: string, keyType: string}
+) {
+  const tonicOffset = 
+  NoteList.indexOf(modulate.tonic as typeof NoteList[number]) -
+  NoteList.indexOf(origin.tonic as typeof NoteList[number]);
+
+  const keyTypeOffset = 
+    origin.keyType === modulate.keyType ?
+      0 :
+      origin.keyType === "Major" ?
+        -3 :
+        3
+
+  return tonicOffset + keyTypeOffset;
+}
+
+function modulate(note: string, offset: number) {
+  if (note === "") return "";
+  const originIndex = NoteList.indexOf(note as typeof NoteList[number]);
+  return NoteList[originIndex + offset];
 }
 
 export const NoteList = [
