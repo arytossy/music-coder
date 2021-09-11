@@ -4,7 +4,7 @@ import { ScoreBlock } from "../utils/utils";
 export default function Block(props: ScoreBlock) {
   return (
     <div className="block">
-      <div className="chord">
+      <div className="chord" onClick={props.handler}>
         <span className="root">{props.root}</span>
         <span className="accidental">{props.accidental}</span>
         <span className="quality">{props.quality}</span>

@@ -9,6 +9,7 @@ export type ScoreBlock = {
       accidental: AccidentalSymbols;
   };
   lyrics: string;
+  handler?: () => void
 }
 
 export type ScoreLine = {blocks: ScoreBlock[]};
@@ -23,7 +24,12 @@ export function transform(accidental: string): AccidentalSymbols {
   return "";
 }
 
-export function parse(data: string, offset: number): ScoreObject {
+export function parse(
+  data: string,
+  offset: number,
+  handler?: (start: number, end: number) => void
+): ScoreObject {
+  let cursor = 0;
   const strLines = data.split("\n");
   const lines = strLines.map((strLine) => {
     const strBlocks = strLine.split("[");
@@ -31,6 +37,7 @@ export function parse(data: string, offset: number): ScoreObject {
       strBlocks.shift();
     } else {
       strBlocks[0] = "]" + strBlocks[0];
+      cursor -= 2;
     }
     const blocks = strBlocks.map((strBlock) => {
       const $fullChord$lyrics = strBlock.split("]");
@@ -40,7 +47,8 @@ export function parse(data: string, offset: number): ScoreObject {
       let base = $chord$base[1] ? $chord$base[1] : "";
       note = modulate(note, offset);
       base = modulate(base, offset);
-      return {
+      const currentCursor = cursor;
+      const block = {
         root: (note.match(/[A-G]$/) || [""])[0],
         accidental: transform((note.match(/^[+-]{0,2}/) || [""])[0]),
         quality: quality,
@@ -48,9 +56,15 @@ export function parse(data: string, offset: number): ScoreObject {
           root: (base.match(/[A-G]$/) || [""])[0],
           accidental: transform((base.match(/^[+-]{0,2}/) || [""])[0])
         },
-        lyrics: $fullChord$lyrics[1]
+        lyrics: $fullChord$lyrics[1],
+        handler: handler ?
+          () => handler(currentCursor, currentCursor + $fullChord$lyrics[0].length + 2) :
+          undefined
       };
+      cursor += strBlock.length + 1;
+      return block;
     });
+    cursor++;
     return {blocks: blocks};
   });
   return {lines: lines};

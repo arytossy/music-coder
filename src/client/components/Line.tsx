@@ -15,6 +15,7 @@ export default function Line(props: ScoreLine) {
         quality={block.quality}
         base={block.base}
         lyrics={block.lyrics}
+        handler={block.handler}
       />
     );
     if (i + 1 < length) {

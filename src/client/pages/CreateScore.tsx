@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useHistory } from "react-router";
 import Editor from "../components/Editor";
 import Score from "../components/Score";
@@ -13,6 +13,8 @@ export default function CreateScore() {
   const [tonic, setTonic] = useState("");
   const [keyType, setKeyType] = useState("");
   const [data, setData] = useState("");
+
+  const editor = useRef<HTMLTextAreaElement>(null);
 
   function handleSaveClick() {
     if (
@@ -38,6 +40,11 @@ export default function CreateScore() {
       alert("保存に失敗しました");
       console.error(e);
     });
+  }
+
+  function handleSelectChord(start: number, end: number) {
+    editor.current?.focus();
+    editor.current?.setSelectionRange(start, end);
   }
 
   return (
@@ -82,13 +89,18 @@ export default function CreateScore() {
       </table>
       <div><button onClick={() => handleSaveClick()}>保存</button></div>
       <Editor
+        ref={editor}
         data={data}
         setData={(val) => setData(val)}
         onChange={e => setData(e.target.value)}
       />
       <hr></hr>
       <h3>***Preview***</h3>
-      <Score data={data} offset={0}/>
+      <Score
+        data={data}
+        offset={0}
+        onSelectChord={handleSelectChord}
+      />
     </div>
   );
 }

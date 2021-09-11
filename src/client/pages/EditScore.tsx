@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import Editor from "../components/Editor";
 import Score from "../components/Score";
@@ -13,6 +13,8 @@ export default function EditScore() {
   const [tonic, setTonic] = useState("");
   const [keyType, setKeyType] = useState("");
   const [data, setData] = useState("");
+
+  const editor = useRef<HTMLTextAreaElement>(null);
   
   useEffect(() => {
     axios.get(`/api/scores/${id}`)
@@ -49,6 +51,11 @@ export default function EditScore() {
       alert("保存に失敗しました");
       console.error(e);
     });
+  }
+
+  function handleSelectChord(start: number, end: number) {
+    editor.current?.focus();
+    editor.current?.setSelectionRange(start, end);
   }
 
   if (title === "") {
@@ -101,13 +108,18 @@ export default function EditScore() {
         </table>
         <div><button onClick={() => handleSaveClick()}>保存</button></div>
         <Editor
+          ref={editor}
           data={data}
           setData={(val) => setData(val)}
           onChange={e => setData(e.target.value)}
         />
         <hr></hr>
         <h3>***Preview***</h3>
-        <Score data={data} offset={0}/>
+        <Score
+          data={data}
+          offset={0}
+          onSelectChord={handleSelectChord}
+        />
       </div>
     );
   }
