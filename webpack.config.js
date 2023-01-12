@@ -29,8 +29,6 @@ module.exports = [
     },
     devServer: {
       contentBase: path.resolve(__dirname, "public"),
-      port: 3333,
-      publicPath: "http://localhost:3333/public",
       hotOnly: true,
       proxy: {
         "/api": {

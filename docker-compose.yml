@@ -1,19 +1,20 @@
 version: '3'
 
 services:
+
   app:
-    build: 
-      context: .
-      dockerfile: Dockerfile
-
+    image: node:14-slim
+    ports:
+      - "3000:3000"
     volumes:
-      - ..:/workspace:cached
-
-    command: sleep infinity
+      - .:/workspace:cached
+    environment:
+      NODE_ENV: development
+    working_dir: /workspace
+    command: npm run dev:server
 
   db:
     image: postgres:latest
-    hostname: db
     restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql/data
