@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import ModulateDialog from "../components/ModulateDialog";
 import Score from "../components/Score";
+import Layout from "./Layout";
 
 export default function ShowScore() {
 
@@ -27,7 +28,7 @@ export default function ShowScore() {
       .catch((e) => console.error(e));
   }, []);
 
-  function handleDeleteClick() {
+  function deleteScore() {
     if (confirm(`以下を削除します！\nタイトル：${score.title}`))
       axios.delete(`/api/scores/${score.id}`)
         .then(() => {
@@ -41,32 +42,41 @@ export default function ShowScore() {
     return (
       <div id="not-found">
         <p>データが存在しません...</p>
-        <Link to="/"><button>戻る</button></Link>
+        <Link to="/"><button className="secondary">戻る</button></Link>
       </div>
     );
   } else {
     return (
-      <div id="show-score">
-        <table id="description">
-          <tbody>
-            <tr><th>タイトル：</th><td>{score.title}</td></tr>
-            <tr><th>調：</th><td>{score.key}<button onClick={() => setShow(true)}>転調</button></td></tr>
-          </tbody>
-        </table>
-        <Link to={`/scores/${score.id}/edit`}><button>編集</button></Link>
-        <button className="danger" onClick={() => handleDeleteClick()}>削除</button>
-        <hr></hr>
-        <Score data={score.data} offset={offset} />
+      <Layout
+        breadcrumb={[
+          { text: score.title }
+        ]}
+        contextMenu={[
+          { text: "転調", level: "primary", active: true, callback: () => setShow(true) },
+          { text: "編集", level: "primary", active: true, callback: () => history.push(`/scores/${score.id}/edit`) },
+          { text: "削除", level: "danger", active: true, callback: deleteScore },
+        ]}
+      >
+        <div id="show-score">
+          <table id="description">
+            <tbody>
+              <tr><th>タイトル：</th><td>{score.title}</td></tr>
+              <tr><th>調：</th><td>{score.key}</td></tr>
+            </tbody>
+          </table>
+          <hr></hr>
+          <Score data={score.data} offset={offset} />
 
-        {show ?
-          <ModulateDialog
-            originKey={score.key}
-            onClose={() => setShow(false)}
-            onModulate={(offset) => setOffset(offset)}
-          /> :
-          null
-        }
-      </div>
+          {show ?
+            <ModulateDialog
+              originKey={score.key}
+              onClose={() => setShow(false)}
+              onModulate={(offset) => setOffset(offset)}
+            /> :
+            null
+          }
+        </div>
+      </Layout>
     );
   }
 }

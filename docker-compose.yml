@@ -2,12 +2,21 @@ version: '3'
 
 services:
 
-  app:
+  client:
     image: node:14-slim
     ports:
-      - "3000:3000"
+      - "8080:8080"
     volumes:
-      - .:/workspace:cached
+      - .:/workspace
+    environment:
+      NODE_ENV: development
+    working_dir: /workspace
+    command: npm run dev:client
+
+  server:
+    image: node:14-slim
+    volumes:
+      - .:/workspace
     environment:
       NODE_ENV: development
     working_dir: /workspace

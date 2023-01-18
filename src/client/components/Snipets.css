@@ -1,0 +1,41 @@
+#snipets {
+  display: flex;
+  flex-direction: column;
+}
+
+#snipets-body {
+  flex: 1 1 auto;
+  overflow-y: scroll;;
+}
+
+#snipets-body h5 {
+  margin: 5px 0 5px 0;
+}
+
+#snipets .separator {
+  width: 100%;
+  margin: 10px;
+  border: 1px solid #aaa;
+}
+
+#snipets-footer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#snipets-footer .preview {
+  text-align: center;
+  font-size: 30px;
+  color: #b00;
+}
+
+#snipets-footer .insert-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.none-button:active {
+  background-color: #aee;
+}

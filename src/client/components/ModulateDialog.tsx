@@ -57,7 +57,7 @@ export default function ModulateDialog(props: {
           </p>
         </div>
         <div id="modulate-dialog-footer">
-          <button onClick={() => handleExecute()}>転調</button>
+          <button className="primary" onClick={() => handleExecute()}>転調</button>
         </div>
       </div>
     </div>

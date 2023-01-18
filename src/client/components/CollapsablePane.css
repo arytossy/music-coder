@@ -1,0 +1,35 @@
+.collapsable-pane {
+  display: flex;
+  flex-direction: column;
+}
+
+.collapsable-pane-body {
+  width: 100%;
+  transition: height .5s ease;
+}
+
+.collapsable-pane-body.open {
+  flex: 1 0 auto;
+  height: unset;
+}
+
+.collapsable-pane-body.close {
+  flex: 0 0 auto;
+  height: 0;
+}
+
+.collapsable-pane-footer {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #aaa;
+}
+
+.collapsable-pane-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.collapsable-pane-icon.close {
+  transform: rotate(180deg);
+}

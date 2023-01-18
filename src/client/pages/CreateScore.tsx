@@ -1,106 +1,97 @@
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import Editor from "../components/Editor";
-import Score from "../components/Score";
-import { KeyTypeList, NoteList } from "../utils/utils";
+import NoticeBar from "../components/NoticeBar";
+import Layout from "./Layout";
+
+import "./CreateScore.css";
 
 export default function CreateScore() {
 
   const history = useHistory();
 
   const [title, setTitle] = useState("");
-  const [tonic, setTonic] = useState("");
-  const [keyType, setKeyType] = useState("");
+  const [musicKey, setMusicKey] = useState("");
   const [data, setData] = useState("");
 
-  const editor = useRef<HTMLTextAreaElement>(null);
+  type Notice = {
+    id: number,
+    level: "info" | "warn" | "error" | "success",
+    message: string,
+  }
 
-  function handleSaveClick() {
-    if (
-      title === "" ||
-      tonic === "" ||
-      keyType === "" ||
-      data === ""
-    ) {
-      alert("入力されていないところがあります");
+  const [noticeId, setNoticeId] = useState(0);
+  const [notices, setNotices] = useState<Notice[]>([]);
+
+  function addNotice(level: "info" | "warn" | "error" | "success", message: string) {
+    let id = noticeId;
+    let tmp = notices.slice();
+    tmp.push({ id, level, message });
+    setNoticeId(++id);
+    setNotices(tmp);
+  }
+
+  function save() {
+
+    const empties: string[] = [];
+    if (title === "") empties.push("タイトル");
+    if (musicKey === "") empties.push("調");
+    if (data === "") empties.push("コード譜");
+    if (empties.length > 0) {
+      addNotice("warn", `入力されていないところがあります。[${empties.join("], [")}]`);
       return;
     }
 
-    axios.post("/api/scores", {
+    axios.post(`/api/scores`, {
       title: title,
-      key: `${tonic} ${keyType}`,
+      key: musicKey,
       data: data
     })
     .then(res => {
-      alert("保存しました");
-      history.push(`/scores/${res.data.id}`);
+      addNotice("success", "保存しました！");
+      setTimeout(() => history.push(`/scores/${res.data.id}/edit`), 3000);
     })
     .catch(e => {
-      alert("保存に失敗しました");
+      addNotice("error", "保存に失敗しました。");
+      console.error("保存に失敗しました。");
       console.error(e);
     });
   }
 
-  function handleSelectChord(start: number, end: number) {
-    editor.current?.focus();
-    editor.current?.setSelectionRange(start, end);
+  function abandon() {
+    if (confirm("未保存の内容を破棄して終了します。\nよろしいですか？")) {
+      history.push(`/`);
+    }
   }
 
   return (
-    <div id="create-score">
-      <table id="description">
-        <tbody>
-          <tr>
-            <th>タイトル：</th>
-            <td>
-              <input type="text"
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <th>調：</th>
-            <td>
-              <select
-                value={tonic}
-                onChange={e => setTonic(e.target.value)}>
-                <option value="" disabled>(選択してください)</option>
-                {NoteList.slice(7, 23).map((val) => {
-                  return (
-                    <option value={val} key={val}>{val}</option>
-                  );
-                })}
-              </select>
-              <select
-                value={keyType}
-                onChange={e => setKeyType(e.target.value)}>
-                <option value="" disabled>(選択してください)</option>
-                {KeyTypeList.map((val) => {
-                  return (
-                    <option value={val} key={val}>{val}</option>
-                  );
-                })}
-              </select>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div><button onClick={() => handleSaveClick()}>保存</button></div>
-      <Editor
-        ref={editor}
-        data={data}
-        setData={(val) => setData(val)}
-        onChange={e => setData(e.target.value)}
-      />
-      <hr></hr>
-      <h3>***Preview***</h3>
-      <Score
-        data={data}
-        offset={0}
-        onSelectChord={handleSelectChord}
-      />
-    </div>
+    <Layout
+      breadcrumb={[
+        { text: "新規作成" },
+      ]}
+      contextMenu={[
+        { text: "保存", level: "primary", active: true, callback: save },
+        { text: "破棄", level: "danger", active: true, callback: abandon },
+      ]}
+    >
+      {notices.map(entry => (
+        <NoticeBar
+          key={entry.id}
+          level={entry.level}
+          message={entry.message}
+          timeout={5000} />
+      ))}
+      <div id="create-score">
+        <Editor
+          title={title}
+          musicKey={musicKey}
+          data={data}
+          onChangeTitle={setTitle}
+          onChangeMusicKey={setMusicKey}
+          onChangeData={setData}
+        />
+      </div>
+    </Layout>
   );
 }

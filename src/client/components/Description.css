@@ -1,0 +1,32 @@
+#music-key-cell {
+  display: flex;
+  flex-direction: row;
+}
+
+#tonic-selector {
+  position: relative;
+}
+
+#tonic-selector input[type=text] {
+  width: 100px;
+}
+
+#tonic-selector-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: max-content;
+  background-color: #eff;
+  display: flex;
+  flex-direction: column;
+}
+
+#tonic-selector-tooltip .preview {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#tonic-selector-tooltip .footer {
+  text-align: center;
+}

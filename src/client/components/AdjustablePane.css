@@ -1,0 +1,87 @@
+.adjustable-pane {
+    display: flex;
+}
+
+.adjustable-pane.north,
+.adjustable-pane.south {
+    flex-direction: column;
+}
+
+.adjustable-pane.east,
+.adjustable-pane.west {
+    flex-direction: row;
+}
+
+.adjustable-pane .adjustable-pane-body {
+    flex: 1 1 auto;
+    overflow: scroll;
+}
+
+.adjustable-pane .adjuster {
+    background-color: #fff;
+    border: 1px solid #999;
+    flex: 0 0 auto;
+    position: relative;
+}
+
+.adjustable-pane .adjuster::before {
+    content: "";
+    position: absolute;
+    z-index: 100;
+}
+
+.adjustable-pane .adjuster:hover::before {
+    background-color: rgba(0, 100, 255, 0.2);
+}
+
+.adjustable-pane .adjuster.north,
+.adjustable-pane .adjuster.south {
+    width: 100%;
+    height: 4px;
+    border-left: none;
+    border-right: none;
+    cursor: row-resize;
+}
+
+.adjustable-pane .adjuster.north::before,
+.adjustable-pane .adjuster.south::before {
+    width: 100%;
+    height: 14px;
+    top: -6px;
+}
+
+.adjustable-pane .adjuster.east,
+.adjustable-pane .adjuster.west {
+    width: 4px;
+    height: 100%;
+    border-top: none;
+    border-bottom: none;
+    cursor: col-resize;
+}
+
+.adjustable-pane .adjuster.east::before,
+.adjustable-pane .adjuster.west::before {
+    width: 14px;
+    height: 100%;
+    left: -6px;
+}
+
+#drag-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    background-color: transparent;
+}
+
+#drag-wrapper.north,
+#drag-wrapper.south {
+    cursor: row-resize;
+}
+
+#drag-wrapper.east,
+#drag-wrapper.west {
+    cursor: col-resize;
+}

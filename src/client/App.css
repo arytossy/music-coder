@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 0;
 }
 
 body {
@@ -25,19 +26,34 @@ a:hover {
 button {
   margin: 5px;
   padding: 7px 15px;
-  background-color: #aee;
   border-radius: 5px;
   border: none;
   color: #555;
   font-size: 20px;
 }
 
-button.danger {
-  background-color: #eaa;
+button:disabled {
+  background-color: #bbb !important;
 }
 
-button:hover {
+button.primary {
+  background-color: #aee;
+}
+
+button.primary:hover {
   background-color: #9dd;
+}
+
+button.secondary {
+  background-color: #eee;
+}
+
+button.secondary:hover {
+  background-color: #ccc;
+}
+
+button.danger {
+  background-color: #eaa;
 }
 
 button.danger:hover {
@@ -50,7 +66,7 @@ button.danger:hover {
 
 #description th {
   text-align: end;
-  min-width: 130px;
+  width: 130px;
 }
 
 input[type="text"] {

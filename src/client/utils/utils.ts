@@ -26,7 +26,7 @@ export function transform(accidental: string): AccidentalSymbols {
 
 export function parse(
   data: string,
-  offset: number,
+  offset?: number,
   handler?: (start: number, end: number) => void
 ): ScoreObject {
   let cursor = 0;
@@ -45,8 +45,10 @@ export function parse(
       let note = ($chord$base[0].match(/^[+-]{0,2}[A-G]/) || [""])[0];
       const quality = $chord$base[0].replace(note, "");
       let base = $chord$base[1] ? $chord$base[1] : "";
-      note = modulate(note, offset);
-      base = modulate(base, offset);
+      if (offset !== undefined) {
+        note = modulate(note, offset);
+        base = modulate(base, offset);
+      }
       const currentCursor = cursor;
       const block = {
         root: (note.match(/[A-G]$/) || [""])[0],
@@ -74,11 +76,11 @@ export function getModulateOffset(
   origin: {tonic: string, keyType: string},
   modulate: {tonic: string, keyType: string}
 ) {
-  const tonicOffset = 
+  const tonicOffset =
   NoteList.indexOf(modulate.tonic as typeof NoteList[number]) -
   NoteList.indexOf(origin.tonic as typeof NoteList[number]);
 
-  const keyTypeOffset = 
+  const keyTypeOffset =
     origin.keyType === modulate.keyType ?
       0 :
       origin.keyType === "Major" ?
@@ -92,6 +94,15 @@ function modulate(note: string, offset: number) {
   if (note === "") return "";
   const originIndex = NoteList.indexOf(note as typeof NoteList[number]);
   return NoteList[originIndex + offset];
+}
+
+export function getSymbol(code: "--" | "-" | "" | "+" | "++") {
+  if (code === "--") return "𝄫";
+  if (code === "-") return "♭";
+  if (code === "") return "";
+  if (code === "+") return "♯";
+  if (code === "++") return "𝄪";
+  return "";
 }
 
 export const NoteList = [

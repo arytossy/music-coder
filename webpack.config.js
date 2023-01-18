@@ -29,10 +29,11 @@ module.exports = [
     },
     devServer: {
       contentBase: path.resolve(__dirname, "public"),
+      host: "0.0.0.0",
       hotOnly: true,
       proxy: {
         "/api": {
-          target: "http://localhost:3000"
+          target: "http://server:3000"
         }
       }
     },

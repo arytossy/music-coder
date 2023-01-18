@@ -1,0 +1,38 @@
+.notice-bar {
+  width: 100%;
+  transition: height 0.5s ease-out;
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  overflow-y: hidden;
+}
+
+.notice-bar.info {
+  background-color: #acf;
+}
+
+.notice-bar.warn {
+  background-color: #ffa;
+}
+
+.notice-bar.error {
+  background-color: #faa;
+}
+
+.notice-bar.success {
+  background-color: #afa;
+}
+
+.notice-bar.close {
+  height: 0;
+}
+
+.notice-bar.open {
+  height: unset;
+}
+
+.notice-bar .close-icon svg {
+  width: 15px;
+  height: 15px;
+}
