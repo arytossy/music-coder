@@ -93,6 +93,7 @@ export default function AdjustablePane(props: PropsWithChildren<Props>) {
   function adjustWithTouch(event: TouchEvent) {
 
     event.preventDefault();
+    event.stopPropagation();
 
     if (!touch) return;
     let tmp: null | Touch = null;
