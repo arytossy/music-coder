@@ -1,12 +1,13 @@
 #app {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
 header {
   flex: 0 0 auto;
+  padding: 0 10px;
   background-color: #eee;
   box-shadow: 0 1px 10px #aaa;
   display: flex;
@@ -31,6 +32,13 @@ header {
   font-size: 25px;
 }
 
+#context-menu {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 header h1 {
   margin: 0;
   padding: 10px 10px;
@@ -50,6 +58,7 @@ main {
   padding: 10px 10px;
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
 }
 
 footer {
